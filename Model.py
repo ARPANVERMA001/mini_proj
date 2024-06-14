@@ -1,3 +1,4 @@
+# Defining the Model for the db
 from app import db
 from sqlalchemy import Enum, ForeignKey
 from sqlalchemy.orm import relationship
@@ -16,6 +17,15 @@ class Routes(db.Model):
 
     def __repr__(self):
         return f'{self.route_id}'
+    
+    def to_dict(self):
+        return {
+            'agency_id': self.agency_id,
+            'route_id': self.route_id,
+            'route_long_name': self.route_long_name,
+            'route_short_name': self.route_short_name,
+            'route_type': self.route_type
+        }
 
 class Stops(db.Model):
     __tablename__ = 'Stops'
@@ -30,6 +40,15 @@ class Stops(db.Model):
 
     def __repr__(self):
         return f'{self.stop_id}'
+    
+    def to_dict(self):
+        return {
+            'stop_id': self.stop_id,
+            'stop_code': self.stop_code,
+            'stop_lat': self.stop_lat,
+            'stop_lon': self.stop_lon,
+            'stop_name': self.stop_name
+        }
 
 class Trips(db.Model):
     __tablename__ = 'Trips'
@@ -45,6 +64,14 @@ class Trips(db.Model):
     def __repr__(self):
         return f'{self.trip_id}'
 
+    def to_dict(self):
+        return {
+            'trip_id': self.trip_id,
+            'route_id': self.route_id,
+            'service_id': self.service_id,
+            'shape_id': self.shape_id
+        }
+
 class StopTimes(db.Model):
     __tablename__ = 'StopTimes'
 
@@ -59,6 +86,15 @@ class StopTimes(db.Model):
     def __repr__(self):
         return f'{self.trip_id} - {self.stop_id}'
     
+    def to_dict(self):
+        return {
+            'trip_id': self.trip_id,
+            'stop_sequence': self.stop_sequence,
+            'stop_id': self.stop_id,
+            'arrival_time': self.arrival_time,
+            'departure_time': self.departure_time
+        }
+
 class RealtimeBus(db.Model):
     __tablename__ = 'RealtimeBus'
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
